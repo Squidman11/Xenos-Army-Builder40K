@@ -1,0 +1,101 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Xenos Army Force-Builder</title>
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+
+  <header>
+    <h1>Xenos Army Force-Builder</h1>
+    <p>Warhammer 40,000 Xenos Roster Builder</p>
+  </header>
+
+  <div class="main-layout">
+    
+    <!-- 1. AVAILABLE UNITS SELECTION -->
+    <div class="panel">
+      <h2>Army Catalog</h2>
+      <div class="filter-tabs">
+        <button class="filter-btn active" data-role="all">ALL</button>
+        <button class="filter-btn" data-role="HQ">COMMAND</button>
+        <button class="filter-btn" data-role="Battleline">BATTLELINE</button>
+        <button class="filter-btn" data-role="Infantry">INFANTRY</button>
+        <button class="filter-btn" data-role="Vehicle">VEHICLES</button>
+        <button class="filter-btn" data-role="Cavalry">CAVALRY</button>
+        <button class="filter-btn" data-role="Monster">MONSTERS</button>
+        <button class="filter-btn" data-role="EpicHero">EPIC HEROES</button>
+      </div>
+      <input type="text" id="searchBar" class="search-box" placeholder="Filter units by name...">
+      <p class="points-source">Starter reference points — check the <a id="pointsSourceLink" href="https://mfm.warhammer-community.com/" target="_blank" rel="noopener noreferrer">Munitorum Field Manual</a> for current costs. Repeated-unit cost tiers are not modeled.</p>
+      <div class="scrollable-list" id="catalogList"></div>
+    </div>
+
+    <!-- 2. ARMY ROSTER OVERVIEW -->
+    <div class="panel">
+      <h2>Battle-Force Roster</h2>
+      <div class="roster-select-grid">
+        <div class="detachment-field">
+          <label for="chapterSelect">Xenos Faction</label>
+          <select id="chapterSelect"></select>
+        </div>
+        <div class="detachment-field">
+          <label for="detachmentSelect">Detachment</label>
+          <select id="detachmentSelect"></select>
+          <small>Changing detachments removes assigned enhancements.</small>
+        </div>
+      </div>
+      <div class="game-mode-field">
+        <span class="field-label">Game Mode</span>
+        <div class="game-mode-buttons" role="group" aria-label="Points limit">
+          <button type="button" class="game-mode-btn" data-limit="1000">1,000 pts</button>
+          <button type="button" class="game-mode-btn active" data-limit="2000">2,000 pts</button>
+          <button type="button" class="game-mode-btn" data-limit="custom">Custom</button>
+        </div>
+        <div id="customLimitControls" class="custom-limit-controls" hidden>
+          <label class="sr-only" for="customPointsLimit">Custom points limit</label>
+          <input type="number" id="customPointsLimit" min="1" step="1" value="1500">
+          <button type="button" id="applyCustomLimit">Apply</button>
+        </div>
+      </div>
+      <div class="stats-bar" id="statsBar">
+        Points: <span id="ptsTotal" class="points-good">0</span> / <span id="ptsLimit">2000</span> | Units: <span id="unitTotal">0</span>
+      </div>
+      <div id="rosterRequirements" class="roster-requirements" role="status" aria-live="polite"></div>
+      <div class="scrollable-list" id="rosterList"></div>
+      
+      <div class="utility-grid">
+        <button id="btnExportJson" class="btn-accent">Export JSON</button>
+        <button id="btnExportText" class="btn-accent">Export Text</button>
+        <button id="btnImportJson">Import JSON</button>
+        <button id="btnClearRoster" class="btn-danger">Clear List</button>
+      </div>
+      <input type="file" id="importFile" style="display:none" accept=".json">
+    </div>
+
+    <!-- 3. UNIT OPTIONS -->
+    <div class="panel customizer-panel">
+      <section class="relative-info" id="relativeInfo" aria-live="polite">
+        <h2>Unit &amp; Rules Info</h2>
+        <div id="relativeInfoContent">
+          <p class="placeholder-text">Select a unit to see its faction, role, wargear, and rules notes.</p>
+        </div>
+        <details id="detachmentInfo" class="detachment-info">
+          <summary>Detachment overview: <span id="detachmentInfoTitle"></span></summary>
+          <p id="detachmentInfoDescription"></p>
+          <small>Quick playstyle summary; check the current detachment rules for exact abilities.</small>
+        </details>
+      </section>
+      <h2>Unit Options</h2>
+      <div id="configuratorWorkspace" class="workspace">
+        <p class="placeholder-text">Select an active unit to review its wargear and assign an enhancement.</p>
+      </div>
+    </div>
+
+  </div>
+
+  <script src="app.js"></script>
+</body>
+</html>
