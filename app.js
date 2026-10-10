@@ -783,23 +783,12 @@ function updatePointsDisplay() {
 function renderRelativeInfo(item) {
   relativeInfoContentEl.innerHTML = "";
   if (!item) {
-    addInfoText(relativeInfoContentEl, "p", "Select a unit to see its role, wargear, and rules notes.", "placeholder-text");
+    addInfoText(relativeInfoContentEl, "p", "Select a unit to see its role and rules notes.", "placeholder-text");
     return;
   }
   addInfoText(relativeInfoContentEl, "h3", item.name);
   addInfoText(relativeInfoContentEl, "p", "Faction: " + factions[item.faction].name + " | Role: " + item.role + " | Base cost: " + item.points + " pts.");
   addInfoText(relativeInfoContentEl, "p", unitInfo[item.unitId] || "Check the current unit datasheet for its special rules and exact weapon profiles.");
-  const equipment = Object.entries(item.selections || {}).filter(([, value]) => value);
-  if (equipment.length) {
-    addInfoText(relativeInfoContentEl, "h3", "Wargear");
-    const list = document.createElement("ul");
-    equipment.forEach(([slot, value]) => {
-      const row = document.createElement("li");
-      row.textContent = slot.replace(/_/g, " ") + ": " + value;
-      list.appendChild(row);
-    });
-    relativeInfoContentEl.appendChild(list);
-  }
   if (item.enhancement) {
     addInfoText(relativeInfoContentEl, "h3", "Enhancement: " + item.enhancement.name);
     addInfoText(relativeInfoContentEl, "p", item.enhancement.points + " pts in " + detachments[currentDetachment].name + ". Check the current detachment rules for its exact ability.");
@@ -846,7 +835,7 @@ function renderConfigurator() {
   const note = document.createElement("p");
   note.className = "placeholder-text";
   note.style.marginTop = "10px";
-  note.textContent = "Wargear loadouts are shown for reference and cannot be changed here.";
+  note.textContent = "Unit details are shown for reference and cannot be changed here.";
   configuratorWorkspaceEl.appendChild(note);
 }
 
@@ -883,6 +872,7 @@ function exportData(type) {
       lines.push((index + 1) + ". " + unit.name + (unit.isWarlord ? " (Warlord)" : "") + " [" + cost + " pts]");
       if (unit.enhancement) lines.push("   - Enhancement: " + unit.enhancement.name + " (" + unit.enhancement.points + " pts)");
       Object.entries(unit.selections || {}).forEach(([slot, value]) => {
+        if (slot === "weapons") return;
         if (value) lines.push("   - " + slot.replace(/_/g, " ") + ": " + value);
       });
       lines.push("");
